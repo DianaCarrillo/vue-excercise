@@ -2,12 +2,13 @@
  <div>
    <input type="text" v-model="todo" v-on:keyup.enter="sending" />
    <button @click="sending(todo)">ok</button>
-   <div class="card container offset-lg-5" style="width: 18rem;" v-for="(item, index) in arrayList" :key="item.id">
-    <ul class="list-group list-group-flush" >
+   <div class="card container offset-lg-5" style="width: 18rem;" v-for="(item, index) in arrayList" :key="item.id"  :style="{borderColor: activeColor}" >
+    <ul class="list-group list-group-flush">
      <!-- <li class="list-group-item">{{todo}}</li> -->
-     <li class="list-group-item" > {{index}}. {{item}}</li> 
-     <button class="done-task" @click="doneTask(index)">Done<i class="fas fa-check-circle"></i></button>     
-     <button class="delete-task" @click="deleteTask(index)">Delete<i class="fas fa-times-circle"></i></button>
+     <li class="list-group-item" :class="{ willEdit: isActive }" :key="item.id" > {{index}}. {{item}}</li> 
+     <i class="fas fa-check-circle"  @click="doneTask(index)"></i>     
+     <i class="fas fa-times-circle"  @click="deleteTask(index)"></i>
+     <button class="edit-task" @click="editTask(index)">Edit</button>
     </ul>
    </div>
  </div>
@@ -19,7 +20,9 @@
      data() {
        return {
          todo: "",
-         arrayList: []
+         arrayList: [],
+         isActive: false,
+         activeColor: 'red'
        }
      },
      methods : {
@@ -28,8 +31,8 @@
          this.todo = "";
      
         },
-        doneTask : function (index){
-          alert('congrats, you have done your task'+ ' ' + index)
+        doneTask : function (){
+          this.activeColor = "greenyellow"
         },
         deleteTask : function (index){
         var confirm = window.confirm('Do you really want to erase your task?')
@@ -40,6 +43,10 @@
           return;
           }
 
+        },
+        editTask: function (){
+          this.isActive = true
+          console.log(this.isActive)
         }
      }
  }
@@ -47,7 +54,7 @@
 
 <style>
     .card {
-        margin-top: 30px;
+        margin-top: 30px; 
     }
     i{
     margin: 10px;
